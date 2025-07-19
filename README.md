@@ -4,6 +4,7 @@
 ![Python](https://img.shields.io/badge/python-3.10%2B-green.svg)
 ![CUDA](https://img.shields.io/badge/CUDA-11.8%2B-brightgreen.svg)
 ![GPU](https://img.shields.io/badge/GPU-NVIDIA-76B900.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 Un potente generador de imágenes con Inteligencia Artificial que utiliza **Stable Diffusion** con aceleración **GPU** para crear imágenes de alta calidad de forma rápida y eficiente.
 
@@ -82,7 +83,7 @@ chmod +x install.sh
 
 #### 1️⃣ Clonar el Repositorio
 ```bash
-git clone https://github.com/usuario/imagenes_IA.git
+git clone https://github.com/juancmacias/generateimageIA.git
 cd imagenes_IA
 ```
 
@@ -282,8 +283,8 @@ Este proyecto está bajo la Licencia MIT. Ver `LICENSE` para más detalles.
 ## 👨‍💻 Autor
 
 **Curso IA F5**
-- 📧 Email: curso@ia-f5.com
-- 🌐 Website: [ia-f5.com](https://ia-f5.com)
+- 📧 Email: juancmaciassalvador@gmail.com
+- 🌐 Website: [juancarlosmacias.es](https://www.juancarlosmacias.es)
 
 ## 🙏 Agradecimientos
 
