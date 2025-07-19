@@ -1,0 +1,28 @@
+# Dependencias principales para generación de imágenes con IA
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Modelos de difusión y transformers
+diffusers>=0.21.0
+transformers>=4.30.0
+accelerate>=0.20.0
+
+# Procesamiento de imágenes
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Sistema RAG y embeddings (opcionales)
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.4
+
+# Utilidades adicionales
+safetensors>=0.3.0
+# xformers>=0.0.20  # Comentado debido a problemas de compatibilidad
+
+# Información del sistema
+psutil>=5.9.0
+
+# Dependencias opcionales para mejor rendimiento
+opencv-python>=4.8.0
+scipy>=1.10.0
