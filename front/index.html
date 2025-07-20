@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Imágenes IA</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Procesando...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-magic"></i>
+                <span>ImageGen IA</span>
+            </div>
+            <div class="nav-menu">
+                <div id="navAuth" class="nav-auth hidden">
+                    <span id="userEmail" class="user-email"></span>
+                    <span id="userUsage" class="user-usage"></span>
+                    <button id="logoutBtn" class="btn btn-outline">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Cerrar Sesión
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-section">
+            <div class="auth-container">
+                <h1 class="auth-title">
+                    <i class="fas fa-magic"></i>
+                    Generador de Imágenes IA
+                </h1>
+                <p class="auth-subtitle">Crea imágenes increíbles con inteligencia artificial</p>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-form">
+                    <h2><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</h2>
+                    <form id="loginFormEl">
+                        <div class="form-group">
+                            <label for="loginEmail">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </label>
+                            <input type="email" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <input type="password" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        ¿No tienes cuenta? 
+                        <a href="#" id="showRegister">Regístrate aquí</a>
+                    </p>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="auth-form hidden">
+                    <h2><i class="fas fa-user-plus"></i> Crear Cuenta</h2>
+                    <form id="registerFormEl">
+                        <div class="form-group">
+                            <label for="registerName">
+                                <i class="fas fa-user"></i>
+                                Nombre Completo
+                            </label>
+                            <input type="text" id="registerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerEmail">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </label>
+                            <input type="email" id="registerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerPassword">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <input type="password" id="registerPassword" required minlength="6">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i>
+                            Crear Cuenta
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        ¿Ya tienes cuenta? 
+                        <a href="#" id="showLogin">Inicia sesión aquí</a>
+                    </p>
+                </div>
+
+                <div class="auth-footer">
+                    <div class="feature-item">
+                        <i class="fas fa-bolt"></i>
+                        <span>Generación rápida</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-download"></i>
+                        <span>Descarga ilimitada</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-history"></i>
+                        <span>Historial completo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Section -->
+        <div id="appSection" class="app-section hidden">
+            <!-- User Profile -->
+            <div class="profile-section">
+                <div class="profile-info">
+                    <h2 id="welcomeUser">Bienvenido</h2>
+                    <div class="usage-stats">
+                        <div class="stat-item">
+                            <i class="fas fa-images"></i>
+                            <span>Imágenes generadas: <strong id="usageCount">0</strong></span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fas fa-battery-three-quarters"></i>
+                            <span>Restantes: <strong id="remainingUses">0</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generator Section -->
+            <div class="generator-section">
+                <div class="generator-card">
+                    <h3><i class="fas fa-magic"></i> Generar Imagen</h3>
+                    <form id="generateForm">
+                        <div class="form-group">
+                            <label for="promptText">
+                                <i class="fas fa-pen"></i>
+                                Descripción de la imagen
+                            </label>
+                            <textarea 
+                                id="promptText" 
+                                placeholder="Describe la imagen que quieres generar... Ej: 'Un gato espacial con traje de astronauta flotando entre estrellas'"
+                                rows="3"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="imageWidth">
+                                    <i class="fas fa-arrows-alt-h"></i>
+                                    Ancho
+                                </label>
+                                <select id="imageWidth">
+                                    <option value="512">512px</option>
+                                    <option value="768">768px</option>
+                                    <option value="1024">1024px</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="imageHeight">
+                                    <i class="fas fa-arrows-alt-v"></i>
+                                    Alto
+                                </label>
+                                <select id="imageHeight">
+                                    <option value="512">512px</option>
+                                    <option value="768">768px</option>
+                                    <option value="1024">1024px</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-generate">
+                            <i class="fas fa-magic"></i>
+                            Generar Imagen
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Generated Image Preview -->
+                <div id="imagePreview" class="image-preview hidden">
+                    <h4><i class="fas fa-image"></i> Imagen Generada</h4>
+                    <div class="preview-container">
+                        <img id="generatedImage" src="" alt="Imagen generada">
+                        <div class="image-actions">
+                            <button id="downloadImage" class="btn btn-outline">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </button>
+                            <button id="generateAnother" class="btn btn-secondary">
+                                <i class="fas fa-plus"></i>
+                                Generar Otra
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gallery Section -->
+            <div class="gallery-section">
+                <div class="gallery-header">
+                    <h3><i class="fas fa-images"></i> Mis Imágenes</h3>
+                    <button id="refreshGallery" class="btn btn-outline btn-small">
+                        <i class="fas fa-sync-alt"></i>
+                        Actualizar
+                    </button>
+                </div>
+                <div id="imageGallery" class="image-gallery">
+                    <div class="gallery-empty">
+                        <i class="fas fa-images"></i>
+                        <p>Aún no has generado ninguna imagen</p>
+                        <p>¡Crea tu primera imagen arriba!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <img id="modalImage" src="" alt="Vista ampliada">
+            <div class="modal-info">
+                <h4 id="modalPrompt"></h4>
+                <div class="modal-actions">
+                    <button id="modalDownload" class="btn btn-primary">
+                        <i class="fas fa-download"></i>
+                        Descargar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/generator.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

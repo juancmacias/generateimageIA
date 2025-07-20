@@ -20,6 +20,18 @@ faiss-cpu>=1.7.4
 safetensors>=0.3.0
 # xformers>=0.0.20  # Comentado debido a problemas de compatibilidad
 
+# API Web Framework
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+python-multipart>=0.0.6
+requests>=2.31.0
+
+# Autenticación y seguridad
+supabase>=2.15.0
+python-jose[cryptography]>=3.4.0
+passlib[bcrypt]>=1.7.4
+python-dotenv>=1.0.0
+
 # Información del sistema
 psutil>=5.9.0
 

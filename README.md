@@ -12,6 +12,8 @@ Un potente generador de imágenes con Inteligencia Artificial que utiliza **Stab
 
 - 🚀 **Aceleración GPU** con NVIDIA CUDA
 - 🎯 **Stable Diffusion v1.5** - Estado del arte en generación de imágenes
+- 🌐 **API REST** - Interfaz HTTP para integración con aplicaciones
+- 🔐 **Sistema de autenticación** - Usuarios, API keys y límites de uso
 - ⚡ **Optimizaciones avanzadas** para máximo rendimiento
 - 🧠 **Gestión inteligente de memoria** VRAM
 - 🛠️ **Diagnósticos completos** de hardware
@@ -25,6 +27,7 @@ imagenes_IA/
 ├── 📁 app/                   # Aplicación principal
 │   ├── image_generator.py    # Motor de generación IA
 │   ├── main.py               # Script del gato espacial
+│   ├── api.py                # API REST para integración
 │   └── __init__.py           # Configuración del paquete
 │
 ├── 📁 utils/                  # Herramientas y diagnósticos
@@ -43,6 +46,10 @@ imagenes_IA/
 ├── 🩺 check_gpu.py          # Script acceso rápido - Comprobar GPU
 ├── 📚 run_examples.py       # Script acceso rápido - Ejecutar ejemplos
 ├── ℹ️  system_check.py       # Script acceso rápido - Info sistema
+├── 🌐 run_api.py            # Script acceso rápido - Ejecutar API REST
+├── � run_api_with_auth.py  # Script acceso rápido - API con autenticación
+├── �📱 api_client_example.py # Cliente de ejemplo para la API
+├── 🔑 auth_client_example.py # Cliente con autenticación
 │
 ├── requirements.txt          # Dependencias
 ├── README.md                # Esta documentación
@@ -156,6 +163,30 @@ python test_system.py
 ```
 Ejecuta una suite completa de tests para verificar que todo funciona.
 
+### 🌐 Ejecutar API REST
+```bash
+python run_api.py
+```
+Inicia la API REST en `http://localhost:8000` para integración con aplicaciones.
+
+### � Ejecutar API con Autenticación
+```bash
+python run_api_with_auth.py
+```
+Inicia la API con sistema completo de usuarios, API keys y límites de uso.
+
+### �📱 Probar Cliente API
+```bash
+python api_client_example.py
+```
+Ejecuta el cliente de ejemplo para probar la API.
+
+### 🔑 Probar Cliente con Autenticación
+```bash
+python auth_client_example.py
+```
+Ejecuta el cliente de ejemplo con registro, login y uso de API keys.
+
 ## 📝 Uso Avanzado
 
 ### Generar Imagen Personalizada
@@ -255,6 +286,83 @@ for prompt in prompts:
     image, _ = generator.generate(prompt)
     image.save(f"{prompt.replace(' ', '_')}.png")
 ```
+
+## 🌐 API REST
+
+### Iniciar la API
+```bash
+python run_api.py
+```
+
+La API estará disponible en `http://localhost:8000` con documentación interactiva en `/docs`.
+
+### Generar imagen via API
+```python
+import requests
+
+response = requests.post("http://localhost:8000/generate", json={
+    "prompt": "a beautiful landscape with mountains",
+    "width": 512,
+    "height": 512,
+    "num_inference_steps": 20,
+    "guidance_scale": 7.5
+})
+
+result = response.json()
+print(f"Imagen generada: {result['image_url']}")
+```
+
+### Endpoints principales
+- `POST /generate` - Generar imagen
+- `GET /status` - Estado del sistema  
+- `GET /image/{filename}` - Descargar imagen
+- `GET /images/list` - Listar imágenes disponibles
+
+Ver documentación completa en [`API_DOCUMENTATION.md`](API_DOCUMENTATION.md).
+
+## 🔐 API con Autenticación
+
+### Sistema de Usuarios con Supabase
+```bash
+# Ejecutar con autenticación
+python run_api_with_auth.py
+
+# O sin autenticación (compatible con versión anterior)
+python run_api_with_auth.py --no-auth
+```
+
+### Registro de usuario
+```python
+import requests
+
+# Registrar nuevo usuario
+response = requests.post("http://localhost:8000/auth/register", json={
+    "email": "usuario@ejemplo.com",
+    "password": "contraseña_segura",
+    "full_name": "Tu Nombre"
+})
+
+result = response.json()
+api_key = result["user"]["api_key"]  # Guarda esta API key
+```
+
+### Generar imagen con API key
+```python
+headers = {"Authorization": f"Bearer {api_key}"}
+response = requests.post("http://localhost:8000/generate", 
+    json={"prompt": "beautiful landscape"}, 
+    headers=headers
+)
+```
+
+### Funcionalidades de autenticación
+- **Registro/Login**: Sistema completo de usuarios
+- **API Keys**: Acceso programático seguro
+- **Límites de uso**: Control de generaciones por usuario
+- **Estadísticas**: Registro de todas las generaciones
+- **Compatibilidad total**: Funciona con y sin autenticación
+
+Ver documentación completa en [`AUTH_DOCUMENTATION.md`](AUTH_DOCUMENTATION.md).
 
 ## 📚 Dependencias Principales
 
