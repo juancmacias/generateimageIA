@@ -66,6 +66,12 @@ class AuthManager {
             
             const response = await this.api.login({ email, password });
             
+            // Guardar el JWT si existe en la respuesta
+            if (response.access_token) {
+                Utils.setStorage(CONFIG.STORAGE_KEYS.JWT_TOKEN, response.access_token);
+                window.lastJwtToken = response.access_token;
+            }
+            
             if (response.user && response.user.api_key) {
                 // Store user data
                 Utils.setStorage(CONFIG.STORAGE_KEYS.API_KEY, response.user.api_key);
@@ -124,6 +130,12 @@ class AuthManager {
                 password,
                 full_name: name
             });
+            
+            // Guardar el JWT si existe en la respuesta
+            if (response.access_token) {
+                Utils.setStorage(CONFIG.STORAGE_KEYS.JWT_TOKEN, response.access_token);
+                window.lastJwtToken = response.access_token;
+            }
             
             if (response.user && response.user.api_key) {
                 // Store user data
@@ -197,6 +209,27 @@ class AuthManager {
         if (remainingUses) {
             const remaining = (this.userProfile.usage_limit || 100) - (this.userProfile.usage_count || 0);
             remainingUses.textContent = remaining;
+        }
+        // Mostrar el JWT en el campo visual y permitir copiarlo
+        const userApiKey = document.getElementById('userApiKey');
+        const copyApiKey = document.getElementById('copyApiKey');
+        let jwtToken = '';
+        // Prioridad: último token recibido en login/registro
+        if (window.lastJwtToken && typeof window.lastJwtToken === 'string') {
+            jwtToken = window.lastJwtToken;
+        } else {
+            jwtToken = Utils.getStorage(CONFIG.STORAGE_KEYS.JWT_TOKEN, '');
+        }
+        if (userApiKey) {
+            userApiKey.value = jwtToken;
+        }
+        if (copyApiKey) {
+            copyApiKey.onclick = () => {
+                if (userApiKey && userApiKey.value) {
+                    navigator.clipboard.writeText(userApiKey.value);
+                    Utils.showToast('API Key copiada al portapapeles', 'success');
+                }
+            };
         }
     }
     
