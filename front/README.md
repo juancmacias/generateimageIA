@@ -237,6 +237,7 @@ npm install -g uglify-js
 uglifyjs app.js -o app.min.js
 ```
 
+
 ### 2. Configuración HTTPS
 
 Asegúrate de usar HTTPS en producción:
